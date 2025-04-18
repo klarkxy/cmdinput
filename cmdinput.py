@@ -49,7 +49,9 @@ def _read_one(
     从输入源读取单个数据并转换为指定类型
 
     """
-    if typ is list:  # 如果是列表，循环读取
+    if isinstance(typ, list):  # 如果是列表，循环读取
+        if len(typ) == 0:
+            raise ValueError("List type requires at least one element type")
         ret = []
         for ty in typ:
             value = _read_one(ty, sep, file)

@@ -14,7 +14,7 @@ a, b, c = cmdinput.read(int, int, int)  # ← 优雅永不过时
 
 ## 🛠️ 快速上手
 ```bash
-pip install cmdinput  # 只需1秒，输入革命即刻开始！
+pip install cmdinput
 ```
 
 ```python
@@ -23,19 +23,19 @@ import cmdinput as cin
 # 基本操作
 name = cin.read(str)  # "请输入你的名字："
 
-# 高级玩法
-matrix = cin.read([[float*5]*6])  # 直接读取二维浮点数组
+# 列表
+matrix = cin.read([[float]*5]*6)  # 直接读取二维浮点数组
 
-# 布尔值魔术 🔮
+# 布尔值 🔮
 is_admin, has_permission = cin.read(bool, bool)  # 自动识别True/False
 
 # 自定义分隔符 🔧
 data = cin.read(int, float, str, sep="|")  # 支持任意分隔符
 
-# 类型转换黑魔法 🔮
+# 类型转换 🔮
 binary_num = cin.read(lambda x: int(x, 2))  # 自动转换二进制字符串
 
-# 文件读取神器 📂
+# 文件读取 📂
 with open('data.txt') as f:
     x, y = cin.read(float, float, file=f)
 

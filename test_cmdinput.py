@@ -42,6 +42,19 @@ class TestCmdInput(unittest.TestCase):
             self.assertTrue(read(bool, file=f))
             self.assertFalse(read(bool, file=f))
 
+    def test_read_binary(self):
+        """测试读取二进制数值"""
+        input_str = "1010\n1111\n100000\n102\n"
+        with io.StringIO(input_str) as f:
+            # 有效二进制测试
+            self.assertEqual(read(lambda x: int(x, 2), file=f), 0b1010)
+            self.assertEqual(read(lambda x: int(x, 2), file=f), 0b1111)
+            self.assertEqual(read(lambda x: int(x, 2), file=f), 0b100000)
+
+            # 无效二进制测试
+            with self.assertRaises(ValueError):
+                read(lambda x: int(x, 2), file=f)
+
     def test_readline(self):
         """测试读取整行"""
         input_str = "this is a complete line\n"
