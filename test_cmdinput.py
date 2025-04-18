@@ -1,6 +1,7 @@
 import unittest
 import io
-from cmdinput import read, readline, read_list, clear_buffer
+from cmdinput import read, readline, clear_buffer
+
 
 class TestCmdInput(unittest.TestCase):
     def setUp(self):
@@ -51,7 +52,7 @@ class TestCmdInput(unittest.TestCase):
         """测试读取列表"""
         input_str = "1 2 3 4 5\n"
         with io.StringIO(input_str) as f:
-            lst = read_list(int, 5, file=f)
+            lst = read([int] * 5, file=f)
             self.assertEqual(lst, [1, 2, 3, 4, 5])
 
     def test_buffer_management(self):
@@ -61,7 +62,7 @@ class TestCmdInput(unittest.TestCase):
             # 第一次读取会消耗第一行
             a = read(int, file=f)
             self.assertEqual(a, 1)
-            
+
             # 清空缓冲区后应该从第二行开始读取
             clear_buffer()
             b = read(int, file=f)
@@ -132,20 +133,20 @@ class TestCmdInput(unittest.TestCase):
         input_str = "\n"
         with io.StringIO(input_str) as f:
             with self.assertRaises(ValueError):
-                read_list(int, 0, file=f)
+                read([int] * 0, file=f)
 
     def test_read_single_element_list(self):
         """测试读取单元素列表"""
         input_str = "42\n"
         with io.StringIO(input_str) as f:
-            lst = read_list(int, 1, file=f)
+            lst = read([int] * 1, file=f)
             self.assertEqual(lst, [42])
 
     def test_read_large_list(self):
         """测试读取大列表"""
         input_str = " ".join(str(i) for i in range(100)) + "\n"
         with io.StringIO(input_str) as f:
-            lst = read_list(int, 100, file=f)
+            lst = read([int] * 100, file=f)
             self.assertEqual(lst, list(range(100)))
 
     def test_mixed_read_and_readline(self):
@@ -203,7 +204,7 @@ class TestCmdInput(unittest.TestCase):
         with io.StringIO(input_str) as f:
             lst = []
             for _ in range(3):
-                lst.extend(read_list(int, 2, file=f))
+                lst.extend(read([int] * 2, file=f))
             self.assertEqual(lst, [1, 2, 3, 4, 5, 6])
 
     def test_read_then_immediate_clear(self):
@@ -246,8 +247,33 @@ class TestCmdInput(unittest.TestCase):
         """测试读取带前导/后缀空格的列表"""
         input_str = "   1   2   3   \n"
         with io.StringIO(input_str) as f:
-            lst = read_list(int, 3, file=f)
+            lst = read([int] * 3, file=f)
             self.assertEqual(lst, [1, 2, 3])
+
+    def test_mixed_int_float_list(self):
+        """测试混合整型和浮点型列表"""
+        input_str = "1 2 3 4 5 1.1 2.2 3.3\n"
+        with io.StringIO(input_str) as f:
+            lis = read([int] * 5 + [float] * 3, file=f)
+            self.assertEqual(lis, [1, 2, 3, 4, 5, 1.1, 2.2, 3.3])
+
+    def test_nested_int_lists(self):
+        """测试嵌套整型列表"""
+        input_str = "1 2 3 4\n5 6 7 8\n9 10 11 12\n"
+        with io.StringIO(input_str) as f:
+            matrix = read([[int] * 4] * 3, file=f)
+            self.assertEqual(matrix, [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+
+    def test_multidimensional_list(self):
+        """测试三维列表读取"""
+        input_str = "1 2\n3 4\n5 6\n7 8\n9 10\n11 12\n"
+        with io.StringIO(input_str) as f:
+            cube = read([[[int] * 2] * 2] * 3, file=f)
+
+            self.assertEqual(
+                cube, [[[1, 2], [3, 4]], [[5, 6], [7, 8]], [[9, 10], [11, 12]]]
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
