@@ -18,7 +18,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.9",
+    python_requires=">=3.7",
     install_requires=[],  # 没有第三方依赖
     extras_require={
         "dev": ["twine>=4.0.2"],
@@ -28,7 +28,7 @@ setup(
         "console_scripts": [
             # 如果没有命令行工具可留空
         ],
-    }
+    },
 )
 
 # 使用说明：
