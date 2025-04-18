@@ -1,4 +1,4 @@
-# 🚀 CMD-Input —— 让Python输入不再烫手！
+# 🚀 CMD-Input
 
 ![test](https://img.shields.io/badge/单元测试-100%25通过-brightgreen) 
 ![version](https://img.shields.io/badge/版本-1.0.0-ff69b4)
